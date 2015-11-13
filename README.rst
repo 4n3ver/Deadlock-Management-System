@@ -23,7 +23,6 @@ Installing System Call into the Kernel
     
 - Add following entry to the end of 64-bit syscalls list, adjust the syscalls number accordingly::
 
-    318 common  hello           sys_hello
     319 common  loltex_init     sys_loltex_init
     320 common  loltex_lock     sys_loltex_lock
     321 common  loltex_unlock   sys_loltex_unlock
@@ -34,24 +33,23 @@ Installing System Call into the Kernel
     
 - Add following entry just before the *#endif*::
 
-    asmlinkage long sys_hello(long test);
     asmlinkage long sys_loltex_init(int index);
     asmlinkage long sys_loltex_lock(long process_id, int mutex_id);
     asmlinkage long sys_loltex_unlock(int mutex_id);
     
-- Create new folder */hello*
+- Create new folder */loltex*
 
-    ``$ mkdir hello``
+    ``$ mkdir loltex``
     
-- Place *hello.c* to */hello* folder
+- Place *loltex.c* to */loltex* folder
 
-- Create *Makefile* on */hello* folder
+- Create *Makefile* on */loltex* folder
 
-    ``$ echo 'obj-y := hello.o' >> Makefile``
+    ``$ echo 'obj-y := loltex.o' >> Makefile``
     
-- Edit *Makefile* of the root directory, and append at the end of the line 'hello/' (line 771 on ours)
+- Edit *Makefile* of the root directory, and append at the end of the line 'loltex/' (line 771 on ours)
 
-    ``core-y        += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ hello/``
+    ``core-y        += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ loltex/``
 
 - Run following command, a window will pop-up, select save
   
@@ -60,6 +58,20 @@ Installing System Call into the Kernel
 - Compile the kernel ``X`` is the number of processor available on your system
 
     ``$ make -jX``
+
+- Compile the kernel ``X`` is the number of processor available on your system and ``arbitrary-name`` is whatever you want
+
+    ``$ make -j X KDEB_PKGVERSION=1.arbitrary-name deb-pkg``
+
+- Install the kernel (which should be in your home directory)
+
+    ``$ dpkg -i linux*.deb``
+
+- Reboot into the kernel and run these commands to check the kernel and if the sys call was included
+
+    ``$ uname -r``
+
+    ``$ cat /proc/kallsyms | grep loltex_init``
 
 
 
