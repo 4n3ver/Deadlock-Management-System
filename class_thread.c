@@ -1,9 +1,10 @@
 #include "class_thread.h"
+#include <pthread.h>
 
-//create custom variables
-pthread_mutexattr_t libAttr;
-pthread_mutex_t libMutex;
-
+int mutex_id = 0;
+#define LOLTEX_INIT 319
+#define LOLTEX_LOCK 320
+#define LOLTEX_UNLOCK 321
 
 int allocate_mutex(class_mutex_t *cmutex)
 {
@@ -28,12 +29,14 @@ int allocate_cond(class_condit_ptr ccondit)
 int class_mutex_init(class_mutex_ptr cmutex)
 {
 
-  if(pthread_mutex_init(&(cmutex->mutex), NULL))
+  /*if(pthread_mutex_init(&(cmutex->mutex), NULL))
   {
     fprintf(stderr, "Error: pthread mutex initialization failed!\n");
     return -1;
-  }
-  printf("mutex init ok\n");
+  }*/
+  cmutex->id = mutex_id++;
+  long int amma = syscall(LOLTEX_INIT, cmutex->id);
+  printf("mutex init ok with mutex_id of %d\n", cmutex->id);
   return 0;
 }
 
@@ -74,17 +77,18 @@ int class_cond_destroy(class_condit_ptr ccondit)
 
 int class_mutex_lock(class_mutex_ptr cmutex)
 {
-  if (pthread_mutex_trylock(&libMutex)==0){  //I want this code to execute at the start of the program, but couldn't find a way to do that.  However, if the library mutex is not locked, this can be done with no negative consequences.
-    pthread_mutexattr_init(&libAttr);
-    pthread_mutexattr_settype(&libAttr, PTHREAD_MUTEX_RECURSIVE_NP);
-    pthread_mutex_init(&libMutex, &libAttr);
-  }
-  pthread_mutex_lock(&libMutex);
-  if(pthread_mutex_lock(&cmutex->mutex))
-  {
-    fprintf(stderr, "Error: pthread mutex lock failed!\n");
-    return -1;
-  }
+  pid_t pid;
+  //pid = gettid();
+  //printf("%ld\n", (long)pid);
+  pthread_t pthread;
+  pthread = pthread_self();
+  printf("%ld\n", (long)pthread);
+  // if(pthread_mutex_lock(&cmutex->mutex))
+  // {
+  //   fprintf(stderr, "Error: pthread mutex lock failed!\n");
+  //   return -1;
+  // }
+  long int amma = syscall(LOLTEX_LOCK, (long)pthread, cmutex->id);
 
   return 0;
 }
@@ -92,14 +96,13 @@ int class_mutex_lock(class_mutex_ptr cmutex)
 
 int class_mutex_unlock(class_mutex_ptr cmutex)
 {
-  if(pthread_mutex_unlock(&cmutex->mutex))
-  {
-    fprintf(stderr, "Error: pthread mutex unlock failed!\n");
-    return -1;
-  }
+  // if(pthread_mutex_unlock(&cmutex->mutex))
+  // {
+  //   fprintf(stderr, "Error: pthread mutex unlock failed!\n");
+  //   return -1;
+  // }
+  long int amma = syscall(LOLTEX_UNLOCK, cmutex->id);
   
-  pthread_mutex_unlock(&libMutex);
-
   return 0;
 }
 
@@ -154,12 +157,6 @@ int class_thread_cond_signal(class_condit_ptr ccondit)
     return -1;
   }
 
-  return 0;
-}
-
-int main(){
-
-  printf("BAGOOL\n");
   return 0;
 }
 

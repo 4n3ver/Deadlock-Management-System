@@ -14,6 +14,7 @@ typedef struct _class_thread_condit
 typedef struct _class_thread_mutex
 {
   pthread_mutex_t mutex;
+  int id;
 } * class_mutex_ptr, class_mutex_t;
 
 // You'll need to change this part 

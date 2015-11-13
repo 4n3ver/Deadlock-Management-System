@@ -849,4 +849,8 @@ asmlinkage long sys_kcmp(pid_t pid1, pid_t pid2, int type,
 asmlinkage long sys_finit_module(int fd, const char __user *uargs, int flags);
 asmlinkage long sys_seccomp(unsigned int op, unsigned int flags,
 			    const char __user *uargs);
+asmlinkage long sys_hello(long test);
+asmlinkage long sys_loltex_init(int index);
+asmlinkage long sys_loltex_lock(long process_id, int mutex_id);
+asmlinkage long sys_loltex_unlock(int mutex_id);
 #endif

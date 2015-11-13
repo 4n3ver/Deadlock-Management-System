@@ -324,6 +324,10 @@
 315	common	sched_getattr		sys_ni_syscall
 316	common	renameat2		sys_ni_syscall
 317	common	seccomp			sys_seccomp
+318	common	hello			sys_hello
+319	common	loltex_init		sys_loltex_init
+320	common	loltex_lock		sys_loltex_lock
+321	common	loltex_unlock	sys_loltex_unlock
 
 #
 # x32-specific system call numbers start at 512 to avoid cache impact
