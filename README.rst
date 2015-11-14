@@ -4,15 +4,16 @@ Deadlock Management System
 :Info: A mutex syscall that prevents deadlock from occurring
 :Authors: William Morlan, Christopher Wang, Yoel Ivan
 
-To start, all commands are in quotes the commands do not need the quotes:
+Installing Library
+==================
 
-1) run "make lib" or "make all"
++ run ``make lib`` or ``make all``
 
-2) run "export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH"
++ run ``export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH``
 
-3) run "./bestoffer"
++ run ``./bestoffer``
 
-4) The program should stall after printing some output.  If anything else happens, seek help.
++ The program should not stall after printing some output.  If anything else happens, seek help.
 
 Installing System Call into the Kernel
 ======================================
@@ -55,10 +56,6 @@ Installing System Call into the Kernel
   
     ``$ make menuconfig``
     
-- Compile the kernel ``X`` is the number of processor available on your system
-
-    ``$ make -jX``
-
 - Compile the kernel ``X`` is the number of processor available on your system and ``arbitrary-name`` is whatever you want
 
     ``$ make -j X KDEB_PKGVERSION=1.arbitrary-name deb-pkg``
