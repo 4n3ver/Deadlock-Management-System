@@ -16,7 +16,7 @@ int allocate_cond(class_condit_ptr ccondit)
   if(!ccondit->condition)
   {
     ccondit->condition = malloc(sizeof(pthread_cond_t));
-    
+
     if(!ccondit->condition)
     {
       fprintf(stderr, "Error: malloc failed to allocate space for condition var!\n");
@@ -82,7 +82,7 @@ int class_mutex_lock(class_mutex_ptr cmutex)
   //printf("%ld\n", (long)pid);
   pthread_t pthread;
   pthread = pthread_self();
-  printf("%ld\n", (long)pthread);
+  // printf("%ld\n", (long)pthread);
   // if(pthread_mutex_lock(&cmutex->mutex))
   // {
   //   fprintf(stderr, "Error: pthread mutex lock failed!\n");
@@ -102,7 +102,7 @@ int class_mutex_unlock(class_mutex_ptr cmutex)
   //   return -1;
   // }
   long int amma = syscall(LOLTEX_UNLOCK, cmutex->id);
-  
+
   return 0;
 }
 
@@ -121,7 +121,7 @@ int class_thread_create(class_thread_t * cthread, void *(*start)(void *), void *
 
   return 0;
 }
-  
+
 int class_thread_join(class_thread_t cthread, void ** retval)
 {
   pthread_t temp_pthread;
@@ -150,7 +150,7 @@ int class_thread_cond_wait(class_condit_ptr ccondit, class_mutex_ptr cmutex)
 
 int class_thread_cond_signal(class_condit_ptr ccondit)
 {
-  
+
   if(pthread_cond_signal(ccondit->condition))
   {
     fprintf(stderr, "Error: pthread cond signal failed!\n");
