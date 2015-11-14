@@ -73,6 +73,18 @@ Installing System Call into the Kernel
 
     ``$ cat /proc/kallsyms | grep loltex_init``
 
+    
+Compile/Run Test Programs
+=========================
 
+- use *gcc* to compile the *\*.c* files::
+    
+    $ gcc class_thread.o -pthread -o class_thread_test test_class_thread.c
+    $ gcc -pthread -o pthread_test test_pthread.c
+    
+- run the test programs::
+
+    $ ./class_thread_test
+    $ ./pthread_test
 
 
